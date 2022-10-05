@@ -13,7 +13,7 @@ accurately test the code when I have a fully up and running ref system.
 
 ref_sys::ref_sys(){
     run_data -> curr_stage = 'Z';
-    run_data -> comp_type= 'Z';
+    //run_data -> comp_type= 'Z';
     run_data -> rem_time = 0;
     run_data -> comp_result = 'Z';
 
@@ -71,8 +71,8 @@ ref_sys::ref_sys(){
     run_data -> rem_42_proj = 0;
 }
 
-void ref_sys::init(S_RefSystem *tempInput) {
-    run_data = tempInput;
+void ref_sys::init() {
+
     Serial2.begin(115200);
 }
 
@@ -844,4 +844,34 @@ bool ref_sys::read_serial(){
         
   
   }
+}
+
+bool ref_sys::hid_buff_write(){
+
+    arr[0] = 3;
+    arr[1] = run_data -> curr_stage;
+    arr[2] = run_data -> rem_time;
+    arr[3] = run_data -> ref_warning;
+    arr[4] = run_data -> blue_sentry_hp;
+    arr[5] = run_data -> red_sentry_hp;
+    arr[6] = run_data -> foul_robot_id;
+    arr[7] = run_data -> curr_robot_id;
+    arr[8] = run_data -> curr_robot_level;
+    arr[9] = run_data -> curr_robot_hp;
+    arr[10] = run_data -> curr_robot_17_cool_val;
+    arr[11] = run_data -> curr_robot_17_heat_lim;
+    arr[12] = run_data -> second_wpn_cool_val;
+    arr[13] = run_data -> second_wpn_heat_lim;
+    arr[14] = run_data -> second_wpn_speed_lim;
+    arr[15] = run_data -> chasis_volt;
+    arr[16] = run_data -> chasis_current;
+    arr[17] = run_data -> robot_power_lim;
+    arr[18] = run_data -> chasis_power;
+    arr[19] = run_data -> curr_robot_barr_heat;
+    arr[20] = run_data -> curr_robot_second_barr_heat;
+    arr[21] = run_data -> launch_id;
+    arr[22] = run_data -> launch_speed;
+    arr[23] = run_data -> launch_freq;
+
+    return true;
 }
