@@ -89,8 +89,6 @@ class ref_sys{
 
     public:
 
-    ref_sys();
-
     void init();
 
     bool read_serial();
