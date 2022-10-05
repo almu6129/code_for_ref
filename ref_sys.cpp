@@ -3,12 +3,10 @@
 #include "ref_sys.h"
 
 /*
-The methods in this code have been tested on a partial ref system, but this particular code has not been 
-a full ref system. I attempted to test it on a full game mode system using the ref system simulation but, I could
-not get the servers to work. There was also trouble getting this up and running since, all the documentation for this
-simulation and the UI itself is in Chinese. The way in which I wrote the code was tested on part of the ref system, but it seemed to
-only be sending 2-3 particular messages and I could not test the full scope of the code. I feel I will be able to more
-accurately test the code when I have a fully up and running ref system. 
+This code has been used with relative success on a ref system in competition. However, our data scheme is currently being
+restructered and this code is changing along with that. I am currently changing where the data is headed once it is interepted from
+serial input. I am also streamlining the code and chagning what we found is useless in comptetion. It should make the code faster in
+the future.
 */
 
 
@@ -72,7 +70,7 @@ bool ref_sys::read_serial(){
 
                 cmd_id = cmd_id | (temp << 8);       //Performing a bitwise or to join the 2 bytes into an 16 bit integer
 
-                Serial.println(cmd_id, HEX);
+                //Serial.println(cmd_id, HEX);
 
 
                 if(cmd_id == 514){   //power and heat data   
