@@ -98,6 +98,8 @@ bool ref_sys::read_serial(){
                 read_combine_n_bytes(&temp_var_32,2);
 
                 run_data.rem_time = temp_var_32;
+
+                return true;
                                     
                 }else if(cmd_id == 3){   //everyone hp
 
@@ -152,7 +154,8 @@ bool ref_sys::read_serial(){
                 run_data.blue_sentry_hp = temp_var_32;
                
                 ///////////////////////////////////////////////////////////////
-            
+                return true;
+
                 }else if(cmd_id == 260){ //ref warning
 
                 //Serial.println("received cmd_id inside 260"); 
@@ -180,6 +183,8 @@ bool ref_sys::read_serial(){
                 read_combine_n_bytes(&temp_var_32,1);
 
                 run_data.foul_robot_id = temp_var_32;
+
+                return true;
 
                 }else if(cmd_id == 201){ //robo stat
 
@@ -297,6 +302,8 @@ bool ref_sys::read_serial(){
                 run_data.robot_power_lim = temp_var_32;
 
                 /////////////////////////////////////////////////////////////////////////////
+
+                return true;
               
                 }
                 else if(cmd_id == 514){   //power, current and voltage   
@@ -356,7 +363,7 @@ bool ref_sys::read_serial(){
 
                 ////////////////////////////////////////////////////////////////////////////
 
-                
+                return true;
                                     
                 }else if(cmd_id == 519){  //RT launch info
 
@@ -402,6 +409,8 @@ bool ref_sys::read_serial(){
                 /////////////////////////////////////////////////////////////////
 
                 run_data.launch_speed = temp_var_32;
+
+                return true;
                 
                 }
         
