@@ -6,41 +6,33 @@
 unsigned long top_time;
 unsigned long cycle_time = 10000;
 
+ref_sys curr_ref;
+
 // Runs once
 void setup() {
-	Serial.begin(115200);
+	Serial.begin(9600);
 
 	if (Serial.available())
 		Serial.println("-- TEENSY SERIAL START --");
     
  	// Hardware setup
 	pinMode(LED_BUILTIN, OUTPUT);
+	pinMode(3,OUTPUT);
 	digitalWrite(LED_BUILTIN, HIGH);
 }
-
-void blink(){
-	static bool status = false;
-	static unsigned long t = millis();
-
-	if (millis() - t > 250){
-		status = !status;
-		t = millis();
-	}
-
-	digitalWrite(LED_BUILTIN, status);
-}
-
 
 // Runs continuously
 void loop() {
 	
     byte arr[64];
 
-    ref_sys curr_ref;
-
 	top_time = micros();
 
-	blink();		
+
+	digitalWrite(3, 1);	
+	delay(100);
+	digitalWrite(3, 0);
+	delay(100);	
 
 	curr_ref.read_serial();	
 

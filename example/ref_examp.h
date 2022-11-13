@@ -89,9 +89,11 @@ class ref_sys{
 
     public:
 
-    void init();
+    ref_sys();
 
     bool read_serial();
+
+    void read_combine_n_bytes(uint32_t &func_input, int n);
 
     bool hid_buff_write(byte  arr[]);  //maybe take a buffer pointer as an input (in progress)
 
