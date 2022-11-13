@@ -1,19 +1,38 @@
+/***********************************************************************************
+ * File: ref_sys.cpp
+ * 
+ * Author: Alex Mueller
+ * Date: 20221113
+ * 
+ * Description: This is a implementation file for functions relating to the ref_sys class
+ *              and its methods. It is meant to be implemented with a Robomaster referee system.
+ * *********************************************************************************/
+
 #include <Arduino.h>
 #include "ref_sys.h"
 
-/*
-This code has been used with relative success on a ref system in competition. However, our data scheme is currently being
-restructered and this code is changing along with that. I am currently changing where the data is headed once it is interepted from
-serial input. I am also streamlining the code and chagning what we found is useless in comptetion. It should make the code faster in
-the future.
-*/
-
-
+/***********************************************************************************
+ * Function: ref_sys()
+ * Description:
+ *      This is a default constructor for the ref_sys class. Currently it only begins Serial2 transmission.
+ * Parameters: N/A
+ * Return: N/A
+ ************************************************************************************/
 
 ref_sys::ref_sys() {
 
     Serial2.begin(115200);
 }
+
+/***********************************************************************************
+ * Function: read_serial()
+ * Description:
+ *      This is a function mean to decode the incoming serial transmission (UART). Takes in information
+ *      byte by byte and then splits it up depending on meaning. It then assigns values to members of the 
+ *      ref_data struct.
+ * Parameters: N/A
+ * Return: true when the Serial transmission successfully gets decoded.
+ ************************************************************************************/
 
 bool ref_sys::read_serial(){
 
@@ -422,6 +441,17 @@ bool ref_sys::read_serial(){
   }
 }
 
+/***********************************************************************************
+ * Function: read_combine_n_bytes()
+ * Description:
+ *      This function takes in a reference to a 32 bit variable and reads n numbers of bytes from
+ *      the serial 2 FIFO, splices the individual bytes together, and then assigns it to the
+ *      int passed in via reference.
+ * Parameters: A reference to the 32 bit pointer that we want to fill and the integer value representing
+ *             how many bytes we need to read.
+ * Return: N/A
+ ************************************************************************************/
+
 void ref_sys::read_combine_n_bytes(uint32_t &func_input, int n){
 
     int temp = 0;
@@ -447,6 +477,14 @@ void ref_sys::read_combine_n_bytes(uint32_t &func_input, int n){
 
     return;
 }
+
+/***********************************************************************************
+ * Function: hid_buff_write()
+ * Description:
+ *      This function dumps the values from our run_data struct into the HID buffer.
+ * Parameters: A 64 byte array for testing purposes (will change when other teams implement HID official)
+ * Return: true once the function finishes
+ ************************************************************************************/
 
 bool ref_sys::hid_buff_write(byte arr[]){
 
