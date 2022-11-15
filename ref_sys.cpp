@@ -87,7 +87,7 @@ bool ref_sys::read_serial(){
                 while(Serial2.readBytes(&temp, 1) != 1){}        //This waits till another byte of data is available
 
                 comp_stat = temp;     //Reading in a byte of data and bit shifting it 8 bits to the left
-                comp_stat = comp_stat >> 4;
+                comp_stat = comp_stat &= 0b00000111;
 
                 if(comp_stat == 0){
                     run_data.curr_stage = 'P';  //pre comp stage
