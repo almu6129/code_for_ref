@@ -1,5 +1,5 @@
 /***********************************************************************************
- * File: ref_example.cpp
+ * File: ref_sys.cpp
  * 
  * Author: Alex Mueller
  * Date: 20221113
@@ -38,7 +38,7 @@ bool ref_sys::read_serial(){
 
     byte enter_code, temp;          //These lines initialize all our temporary variables
     uint16_t data_length, cmd_id;  
-    uint8_t seq, crc, comp_stat, warning_level, robot_level;
+    uint8_t seq, crc, comp_stat, warning_level;
     uint32_t temp_var_32;
 
     Serial.println("in read serial");
@@ -50,7 +50,7 @@ bool ref_sys::read_serial(){
     if(Serial2.available()>=1){      //The first instance to check if serial data is available
 
         bool gotStartByte = false;
-        Serial.println("Serial available");
+        //Serial.println("Serial available");
 
         while(Serial2.available()>=1){
             enter_code = Serial2.read();    //It will read in the first byte of data
@@ -60,31 +60,36 @@ bool ref_sys::read_serial(){
 
                 gotStartByte = true;
 
-                Serial.println("Enter code received");
+                //Serial.println("Enter code received");
 
-                read_combine_n_bytes(&temp_var_32,2);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,2);
 
                 data_length = temp_var_32;
 
+                //Serial.println("After the first read combine");
+
                 //Serial.println(data_length);
 
-                read_combine_n_bytes(&temp_var_32,1);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,1);
                 seq = temp_var_32;
+
                 
-                read_combine_n_bytes(&temp_var_32,1);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,1);
                 crc = temp_var_32;
 
-                read_combine_n_bytes(&temp_var_32,2);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,2);
 
                 cmd_id = temp_var_32;
 
-                //Serial.println(cmd_id, HEX);
+                Serial.println("\n");
+                Serial.println(cmd_id, HEX);
+                Serial.println("\n");
 
                 if(cmd_id == 1){  //stage 1
 
                 //Serial.println("received cmd_id inside 1"); 
 
-                while(Serial2.readBytes(&temp, 1) != 1){}        //This waits till another byte of data is available
+                Serial2.readBytes(&temp, 1);       //This waits till another byte of data is available
 
                 comp_stat = temp;     //Reading in a byte of data and bit shifting it 8 bits to the left
                 comp_stat = comp_stat &= 0b00000111;
@@ -114,7 +119,7 @@ bool ref_sys::read_serial(){
                     run_data.curr_stage = 'R';   //calc comp results
                 }
 
-                read_combine_n_bytes(&temp_var_32,2);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,2);
 
                 run_data.rem_time = temp_var_32;
 
@@ -124,51 +129,51 @@ bool ref_sys::read_serial(){
 
                     //Serial.println("received cmd_id inside 3"); 
 
-                while(Serial2.readBytes(&temp, 1) != 1){}        //This waits till another byte of data is available
-                while(Serial2.readBytes(&temp, 1) != 1){}        //This waits till another byte of data is available
+                Serial2.readBytes(&temp, 1);        //This waits till another byte of data is available
+                Serial2.readBytes(&temp, 1);        //This waits till another byte of data is available
                 /////////////////////////////////////////////////////////////////
-                while(Serial2.readBytes(&temp, 1) != 1){}        //This waits till another byte of data is available
-                while(Serial2.readBytes(&temp, 1) != 1){}        //This waits till another byte of data is available
+                Serial2.readBytes(&temp, 1);        //This waits till another byte of data is available
+                Serial2.readBytes(&temp, 1);        //This waits till another byte of data is available
                 ///////////////////////////////////////////////////////////////
-                while(Serial2.readBytes(&temp, 1) != 1){}        //This waits till another byte of data is available
-                while(Serial2.readBytes(&temp, 1) != 1){}        //This waits till another byte of data is available
+                Serial2.readBytes(&temp, 1);        //This waits till another byte of data is available
+                Serial2.readBytes(&temp, 1);        //This waits till another byte of data is available
                 ///////////////////////////////////////////////////////////////
-                while(Serial2.readBytes(&temp, 1) != 1){}
-                while(Serial2.readBytes(&temp, 1) != 1){}
+                Serial2.readBytes(&temp, 1);
+                Serial2.readBytes(&temp, 1);
                 ///////////////////////////////////////////////////////////////
-                while(Serial2.readBytes(&temp, 1) != 1){}
-                while(Serial2.readBytes(&temp, 1) != 1){}
+                Serial2.readBytes(&temp, 1);
+                Serial2.readBytes(&temp, 1);
                 //////////////////////////////////////////////////////////////////
 
-                read_combine_n_bytes(&temp_var_32,2);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,2);
 
                 run_data.red_sentry_hp = temp_var_32;
 
                 ///////////////////////////////////////////////////////////////
-                while(Serial2.readBytes(&temp, 1) != 1){}
-                while(Serial2.readBytes(&temp, 1) != 1){}
+                Serial2.readBytes(&temp, 1);
+                Serial2.readBytes(&temp, 1);
                 ///////////////////////////////////////////////////////////////
-                while(Serial2.readBytes(&temp, 1) != 1){}
-                while(Serial2.readBytes(&temp, 1) != 1){}
+                Serial2.readBytes(&temp, 1);
+                Serial2.readBytes(&temp, 1);
                 //////////////////////////////////////////////////////////////////
-                while(Serial2.readBytes(&temp, 1) != 1){}        //This waits till another byte of data is available
-                while(Serial2.readBytes(&temp, 1) != 1){}        //This waits till another byte of data is available
+                Serial2.readBytes(&temp, 1);        //This waits till another byte of data is available
+                Serial2.readBytes(&temp, 1);        //This waits till another byte of data is available
                 /////////////////////////////////////////////////////////////////
-                while(Serial2.readBytes(&temp, 1) != 1){}
-                while(Serial2.readBytes(&temp, 1) != 1){}
+                Serial2.readBytes(&temp, 1);
+                Serial2.readBytes(&temp, 1);
                 ///////////////////////////////////////////////////////////////
-                while(Serial2.readBytes(&temp, 1) != 1){}        //This waits till another byte of data is available
-                while(Serial2.readBytes(&temp, 1) != 1){}        //This waits till another byte of data is available
+                Serial2.readBytes(&temp, 1);        //This waits till another byte of data is available
+                Serial2.readBytes(&temp, 1);        //This waits till another byte of data is available
                 ///////////////////////////////////////////////////////////////
-                while(Serial2.readBytes(&temp, 1) != 1){}
-                while(Serial2.readBytes(&temp, 1) != 1){}
+                Serial2.readBytes(&temp, 1);
+                Serial2.readBytes(&temp, 1);
                 ///////////////////////////////////////////////////////////////
-                while(Serial2.readBytes(&temp, 1) != 1){}
-                while(Serial2.readBytes(&temp, 1) != 1){}
+                Serial2.readBytes(&temp, 1);
+                Serial2.readBytes(&temp, 1);
 
                 //////////////////////////////////////////////////////////////////
 
-                read_combine_n_bytes(&temp_var_32,2);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,2);
 
                 run_data.blue_sentry_hp = temp_var_32;
                
@@ -199,7 +204,7 @@ bool ref_sys::read_serial(){
 
                 }
 
-                read_combine_n_bytes(&temp_var_32,1);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,1);
 
                 run_data.foul_robot_id = temp_var_32;
 
@@ -211,17 +216,17 @@ bool ref_sys::read_serial(){
 
                 ////////////////////////////////////////////////////////////////////////////
 
-                read_combine_n_bytes(&temp_var_32,1);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,1);
 
                 run_data.curr_robot_id = temp_var_32;
 
-                read_combine_n_bytes(&temp_var_32,1);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,1);
 
                 run_data.curr_robot_level = temp_var_32;
 
                 ////////////////////////////////////////////////////////////////////////////
 
-                read_combine_n_bytes(&temp_var_32,2);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,2);
 
                 run_data.curr_robot_hp = temp_var_32;
 
@@ -235,25 +240,25 @@ bool ref_sys::read_serial(){
 
                 ////////////////////////////////////////////////////////////////////////////
                 
-                read_combine_n_bytes(&temp_var_32,2);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,2);
 
                 run_data.curr_robot_17_cool_val = temp_var_32;
 
                 ////////////////////////////////////////////////////////////////////////////
 
-                read_combine_n_bytes(&temp_var_32,2);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,2);
 
                 run_data.curr_robot_17_heat_lim = temp_var_32;
 
                 ////////////////////////////////////////////////////////////////////////////
 
-                read_combine_n_bytes(&temp_var_32,2);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,2);
 
                 run_data.curr_robot_17_speed_lim = temp_var_32;
 
                 ////////////////////////////////////////////////////////////////////////////
 
-                read_combine_n_bytes(&temp_var_32,2);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,2);
 
                 if(run_data.curr_robot_id  ==  3 ||run_data.curr_robot_id  ==  4 ||run_data.curr_robot_id  ==  5 ||run_data.curr_robot_id  ==  7 ||
                 run_data.curr_robot_id  ==  103 ||run_data.curr_robot_id  ==  104 ||run_data.curr_robot_id  ==  105 ||run_data.curr_robot_id  ==  107){
@@ -264,7 +269,7 @@ bool ref_sys::read_serial(){
 
                 ////////////////////////////////////////////////////////////////////////////
 
-                read_combine_n_bytes(&temp_var_32,2);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,2);
 
                 if(run_data.curr_robot_id  ==  3 ||run_data.curr_robot_id  ==  4 ||run_data.curr_robot_id  ==  5 ||run_data.curr_robot_id  ==  7 ||
                 run_data.curr_robot_id  ==  103 ||run_data.curr_robot_id  ==  104 ||run_data.curr_robot_id  ==  105 ||run_data.curr_robot_id  ==  107){
@@ -275,7 +280,7 @@ bool ref_sys::read_serial(){
 
                 ////////////////////////////////////////////////////////////////////////////
 
-                read_combine_n_bytes(&temp_var_32,2);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,2);
 
                 if(run_data.curr_robot_id  ==  3 ||run_data.curr_robot_id  ==  4 ||run_data.curr_robot_id  ==  5 ||run_data.curr_robot_id  ==  7 ||
                 run_data.curr_robot_id  ==  103 ||run_data.curr_robot_id  ==  104 ||run_data.curr_robot_id  ==  105 ||run_data.curr_robot_id  ==  107){
@@ -286,7 +291,7 @@ bool ref_sys::read_serial(){
 
                 ////////////////////////////////////////////////////////////////////////////
 
-                read_combine_n_bytes(&temp_var_32,2);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,2);
 
                 if(run_data.curr_robot_id  ==  1 ||run_data.curr_robot_id  ==  101){
 
@@ -296,7 +301,7 @@ bool ref_sys::read_serial(){
 
                 ////////////////////////////////////////////////////////////////////////////
 
-                read_combine_n_bytes(&temp_var_32,2);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,2);
 
                 if(run_data.curr_robot_id  ==  1 ||run_data.curr_robot_id  ==  101){
 
@@ -306,7 +311,7 @@ bool ref_sys::read_serial(){
 
                 ////////////////////////////////////////////////////////////////////////////
 
-                read_combine_n_bytes(&temp_var_32,2);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,2);
 
                 if(run_data.curr_robot_id  ==  1 ||run_data.curr_robot_id  ==  101){
 
@@ -316,7 +321,7 @@ bool ref_sys::read_serial(){
 
                 ////////////////////////////////////////////////////////////////////////////
 
-                read_combine_n_bytes(&temp_var_32,2);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,2);
 
                 run_data.robot_power_lim = temp_var_32;
 
@@ -331,19 +336,19 @@ bool ref_sys::read_serial(){
 
                 ////////////////////////////////////////////////////////////////////////////
 
-                read_combine_n_bytes(&temp_var_32,2);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,2);
 
                 run_data.chasis_volt = temp_var_32;    
 
                 ////////////////////////////////////////////////////////////////////////////
 
-                read_combine_n_bytes(&temp_var_32,2);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,2);
 
                 run_data.chasis_current = temp_var_32;
 
                 ////////////////////////////////////////////////////////////////////////////
 
-                read_combine_n_bytes(&temp_var_32,4);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,4);
 
                 run_data.chasis_power = temp_var_32;
 
@@ -356,13 +361,13 @@ bool ref_sys::read_serial(){
 
                 ////////////////////////////////////////////////////////////////////////////
 
-                read_combine_n_bytes(&temp_var_32,2);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,2);
 
                 run_data.curr_robot_barr_heat = temp_var_32;
 
                 ////////////////////////////////////////////////////////////////////////////
 
-                read_combine_n_bytes(&temp_var_32,2);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,2);
 
                if(run_data.curr_robot_id  ==  3 ||run_data.curr_robot_id  ==  4 ||run_data.curr_robot_id  ==  5 ||run_data.curr_robot_id  ==  7 ||
                 run_data.curr_robot_id  ==  103 ||run_data.curr_robot_id  ==  104 ||run_data.curr_robot_id  ==  105 ||run_data.curr_robot_id  ==  107){
@@ -372,7 +377,7 @@ bool ref_sys::read_serial(){
 
                 ////////////////////////////////////////////////////////////////////////////
 
-                read_combine_n_bytes(&temp_var_32,2);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,2);
 
                 if(run_data.curr_robot_id  ==  1 ||run_data.curr_robot_id  ==  101){
 
@@ -417,13 +422,13 @@ bool ref_sys::read_serial(){
 
                 ///////////////////////////////////////////////////////////////////
 
-                read_combine_n_bytes(&temp_var_32,1);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,1);
 
                 run_data.launch_freq = temp_var_32;
 
                 //////////////////////////////////////////////////////////////////
 
-                read_combine_n_bytes(&temp_var_32,4);
+                temp_var_32 = read_combine_n_bytes(temp_var_32,4);
 
                 /////////////////////////////////////////////////////////////////
 
@@ -452,30 +457,33 @@ bool ref_sys::read_serial(){
  * Return: N/A
  ************************************************************************************/
 
-void ref_sys::read_combine_n_bytes(uint32_t &func_input, int n){
+uint32_t ref_sys::read_combine_n_bytes(uint32_t func_input, int n){
 
-    int temp = 0;
+    uint8_t temp;
     func_input = 0;
 
-    while(Serial2.readBytes(&func_input, 1) != 1){}        //This waits till another byte of data is available
 
+    Serial2.readBytes(&temp, 1);       //This waits till another byte of data is available
+
+        func_input = func_input | temp;
+ 
     if(n != 1){
-        while(Serial2.readBytes(&temp, 1) != 1){}        //This waits till another byte of data is available
+        Serial2.readBytes(&temp, 1);       //This waits till another byte of data is available
 
         func_input = (func_input<<8) | temp;
     }   
     if(n != 1&&n != 2){
-        while(Serial2.readBytes(&temp, 1) != 1){}        //This waits till another byte of data is available
+        Serial2.readBytes(&temp, 1);        //This waits till another byte of data is available
 
         func_input = (func_input<<8) | temp;
     }        
     if(n != 1&&n != 2&&n != 3){
-        while(Serial2.readBytes(&temp, 1) != 1){}        //This waits till another byte of data is available
+        Serial2.readBytes(&temp, 1);        //This waits till another byte of data is available
 
         func_input = (func_input<<8) | temp;
     }      
 
-    return;
+    return func_input;
 }
 
 /***********************************************************************************
